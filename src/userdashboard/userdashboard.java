@@ -2,76 +2,43 @@
 
 package userdashboard;
 
-import config.config;
-import static config.session.username;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JOptionPane;   // For message dialogs
-import userdashboard.UserProfile1;
-import javax.swing.JOptionPane;
+import config.session;
+import javax.swing.JOptionPane;  
+import userdashboard.UserProfile;
 
-public class Userdashboard12 extends javax.swing.JFrame {
 
-    public Userdashboard12() {
+
+
+public class userdashboard extends javax.swing.JFrame {
+
+    public userdashboard() {
         initComponents();
          setLocationRelativeTo(null);
-        displayUser(); 
-        
+
     }
 
-    void displayUser() {
+   private void loadCurrentUser() {
+    if (session.username == null) {
+        JOptionPane.showMessageDialog(this, "No session found.");
+        return;
+    }
 
-    DefaultTableModel model = new DefaultTableModel();
-    model.setRowCount(0);
+    // You can put more code here to load user info from database if needed
+}
 
-    // ✅ Table columns (add status)
-    model.setColumnIdentifiers(new String[]{
-    
-        "Full Name",
-        "Username",
-        "Email",
-        "Phone",
-        "Role",
-        "Status"
-    });
-
-    try {
-        Connection con = config.getConnection();
-        String sql = "SELECT * FROM tbl_user";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            String status = rs.getString("status");
-
-            // Optional: normalize text
-            status = status == null ? "inactive" : status.toUpperCase();
-
-            model.addRow(new Object[]{
-               
-                rs.getString("fullname"),
-                rs.getString("username"),
-                rs.getString("email"),
-                rs.getString("phonenumber"),
-                rs.getString("role"),
-                status
-            });
-        }
-
-        userTable.setModel(model);
-
-        rs.close();
-        ps.close();
-        con.close();
-
-    } catch (Exception e) {
-        System.out.println("Error loading users: " + e.getMessage());
+// Method to check session (cannot be inside another method)
+private void checkSession() {
+    if (session.username == null || session.username.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "No user session found. Please log in again.",
+                "Session Error",
+                JOptionPane.ERROR_MESSAGE);
     }
 }
-    
-    
+
+
+        
+
     
     
     
@@ -102,8 +69,6 @@ public class Userdashboard12 extends javax.swing.JFrame {
         DELETE = new javax.swing.JButton();
         SEARCHBAR = new javax.swing.JTextField();
         SEARCH = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        userTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -240,21 +205,6 @@ public class Userdashboard12 extends javax.swing.JFrame {
         });
         jPanel1.add(SEARCH, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 180, 150, 40));
 
-        userTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(userTable);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, 830, 510));
-
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 750));
 
         pack();
@@ -277,33 +227,30 @@ public class Userdashboard12 extends javax.swing.JFrame {
     }//GEN-LAST:event_DELETEActionPerformed
 
     private void UsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsersActionPerformed
-        jScrollPane1.setVisible(true); // ✅ show table
-    displayUser();               
+      
+             
     }//GEN-LAST:event_UsersActionPerformed
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
-        jScrollPane1.setVisible(false);
+
     }//GEN-LAST:event_HomeActionPerformed
 
     private void Acoount1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Acoount1ActionPerformed
-       Userprof up = new Userprof();
-        up.setVisible(true);
-        this.dispose();
-    
-    try {
-        // Get the user ID from the table (assuming first column is Full Name, we need ID from DB)
-        // We need to fetch ID from the database using the username/email
-        
-       
-     
+     System.out.println("Current user: " + session.username);
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "Database error: " + e.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE
-        );
+    if (session.username == null || session.username.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "No user session found. Please log in again.",
+                "Session Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
     }
+UserProfile profile = new UserProfile();
+    profile.setVisible(true);
+    profile.setLocationRelativeTo(null);
+   
+    this.dispose();
+      
 
     }//GEN-LAST:event_Acoount1ActionPerformed
 
@@ -328,14 +275,18 @@ public class Userdashboard12 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Userdashboard12.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userdashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Userdashboard12.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userdashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Userdashboard12.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userdashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Userdashboard12.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(userdashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -344,7 +295,7 @@ public class Userdashboard12 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Userdashboard12().setVisible(true);
+                new userdashboard().setVisible(true);
             }
         });
     }
@@ -366,8 +317,6 @@ public class Userdashboard12 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable userTable;
     private javax.swing.JLabel userdashboard1;
     // End of variables declaration//GEN-END:variables
 

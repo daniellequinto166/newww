@@ -1,11 +1,15 @@
 
-
 import config.config;
+import config.session;
+import config.usersession;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import javax.swing.JOptionPane;
-import userdashboard.Userdashboard12;
+
+import userdashboard.userdashboard;
 import admindashboard.admindashboard;
 
 public class loginForm extends javax.swing.JFrame {
@@ -40,39 +44,38 @@ public class loginForm extends javax.swing.JFrame {
 
     try {
         Connection con = config.getConnection();
-        String sql = "SELECT role FROM tbl_user WHERE username=? AND password=?";
+       String sql = "SELECT * FROM tbl_user WHERE username=? AND password=?";
+
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setString(1, username);
         ps.setString(2, password);
 
-        ResultSet rs = ps.executeQuery();
+     ResultSet rs = ps.executeQuery();
+     
+     
 
         if (rs.next()) {
-            String role = rs.getString("role");
+session.username = rs.getString("username");
+session.role = rs.getString("role");
+session.fullname = rs.getString("fullname");
+session.email = rs.getString("email");
+session.phonenumber = rs.getString("phonenumber");
+session.id = rs.getInt("id");
+session.password = rs.getString("password"); // optional
 
-            // Debug print
-            System.out.println("DEBUG: ROLE FROM DB = [" + role + "]");
 
-            if (role != null && !role.isEmpty()) {
-                role = role.trim().toLowerCase(); // trim spaces & lowercase
-            } else {
-                role = ""; // fallback
-            }
+            String role = rs.getString("role").trim().toLowerCase();
 
-            // ROLE-BASED REDIRECT
-            if ("admin".equals(role)) {
-                admindashboard adminDash = new admindashboard();
-                adminDash.setVisible(true);
-                adminDash.pack();
-                adminDash.setLocationRelativeTo(null);
-            } else if ("client".equals(role)) {  // ✅ change from "user" to "client"
-                Userdashboard12 clientDash = new Userdashboard12(); // or rename to clientdashboard
-                clientDash.setVisible(true);
-                clientDash.pack();
-                clientDash.setLocationRelativeTo(null);
-            } else {
+            // ================== REDIRECT ==================
+            if (role.equals("admin")) {
+                new admindashboard().setVisible(true);
+            } 
+            else if (role.equals("client")) {
+                new userdashboard().setVisible(true);
+            } 
+            else {
                 JOptionPane.showMessageDialog(this,
-                        "Account role is invalid. Contact admin.",
+                        "Invalid role",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
@@ -86,6 +89,10 @@ public class loginForm extends javax.swing.JFrame {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
+
+        rs.close();
+        ps.close();
+        con.close();
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this,
