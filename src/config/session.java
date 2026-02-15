@@ -4,6 +4,7 @@ package config;
 
 public class session {
      public static String username;
+     public static int user_id;
     public static String role;
     public static String fullname;
     public static String email;

@@ -5,6 +5,8 @@ package userdashboard;
 import config.session;
 import javax.swing.JOptionPane;  
 import userdashboard.UserProfile;
+import userdashboard.AddPet;
+
 
 
 
@@ -59,7 +61,6 @@ private void checkSession() {
         Pet = new javax.swing.JButton();
         Service = new javax.swing.JButton();
         Plot = new javax.swing.JButton();
-        Users = new javax.swing.JButton();
         Settings = new javax.swing.JButton();
         Acoount1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -92,7 +93,7 @@ private void checkSession() {
                 HomeActionPerformed(evt);
             }
         });
-        jPanel2.add(Home, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 210, 50));
+        jPanel2.add(Home, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 210, 50));
 
         Pet.setBackground(new java.awt.Color(102, 51, 0));
         Pet.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
@@ -103,36 +104,35 @@ private void checkSession() {
                 PetActionPerformed(evt);
             }
         });
-        jPanel2.add(Pet, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 210, 50));
+        jPanel2.add(Pet, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 210, 50));
 
         Service.setBackground(new java.awt.Color(102, 51, 0));
         Service.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         Service.setForeground(new java.awt.Color(255, 255, 255));
         Service.setText("SERVICE");
-        jPanel2.add(Service, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 210, 50));
+        Service.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ServiceActionPerformed(evt);
+            }
+        });
+        jPanel2.add(Service, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 210, 50));
 
         Plot.setBackground(new java.awt.Color(102, 51, 0));
         Plot.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         Plot.setForeground(new java.awt.Color(255, 255, 255));
         Plot.setText("PLOT");
-        jPanel2.add(Plot, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 210, 50));
-
-        Users.setBackground(new java.awt.Color(102, 51, 0));
-        Users.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        Users.setForeground(new java.awt.Color(255, 255, 255));
-        Users.setText("USERS");
-        Users.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsersActionPerformed(evt);
-            }
-        });
-        jPanel2.add(Users, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 210, 50));
+        jPanel2.add(Plot, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 210, 50));
 
         Settings.setBackground(new java.awt.Color(102, 51, 0));
         Settings.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         Settings.setForeground(new java.awt.Color(255, 255, 255));
         Settings.setText("SETTINGS");
-        jPanel2.add(Settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, 210, 50));
+        Settings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SettingsActionPerformed(evt);
+            }
+        });
+        jPanel2.add(Settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 580, 210, 50));
 
         Acoount1.setBackground(new java.awt.Color(102, 51, 0));
         Acoount1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
@@ -211,7 +211,8 @@ private void checkSession() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ADDActionPerformed
-        // TODO add your handling code here:
+       new AddPet().setVisible(true); 
+       this.dispose();
     }//GEN-LAST:event_ADDActionPerformed
 
     private void UPDATE1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UPDATE1ActionPerformed
@@ -225,11 +226,6 @@ private void checkSession() {
     private void DELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DELETEActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DELETEActionPerformed
-
-    private void UsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsersActionPerformed
-      
-             
-    }//GEN-LAST:event_UsersActionPerformed
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
 
@@ -255,8 +251,16 @@ UserProfile profile = new UserProfile();
     }//GEN-LAST:event_Acoount1ActionPerformed
 
     private void PetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PetActionPerformed
-        // TODO add your handling code here:
+        System.out.println("Pet section clicked - empty view");
     }//GEN-LAST:event_PetActionPerformed
+
+    private void SettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SettingsActionPerformed
+
+    private void ServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ServiceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ServiceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,7 +316,6 @@ UserProfile profile = new UserProfile();
     private javax.swing.JButton Service;
     private javax.swing.JButton Settings;
     private javax.swing.JButton UPDATE1;
-    private javax.swing.JButton Users;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
